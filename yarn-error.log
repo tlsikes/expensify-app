@@ -1,5 +1,5 @@
 Arguments: 
-  /home/tsikes/opt/node-v8.10.0-linux-x64/bin/node /home/tsikes/opt/node/bin/yarn test
+  /home/tsikes/opt/node-v8.10.0-linux-x64/bin/node /home/tsikes/opt/node/bin/yarn run dev-server
 
 PATH: 
   /home/tsikes/opt/node/bin:/home/tsikes/.sdkman/candidates/groovy/current/bin:/home/tsikes/opt/jdk1.8/bin:/home/tsikes/opt/jdk1.8/jre/bin:/home/tsikes/.cargo/bin:/home/tsikes/bin:/home/tsikes/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
@@ -22,7 +22,8 @@ npm manifest:
     "license": "MIT",
     "scripts": {
       "serve": "live-server public",
-      "build": "webpack",
+      "build:dev": "webpack",
+      "build:prod": "webpack -p",
       "dev-server": "webpack-dev-server",
       "test": "jest"
     },
@@ -6476,7 +6477,7 @@ Trace:
   Error: Command failed.
   Exit code: 1
   Command: sh
-  Arguments: -c jest
+  Arguments: -c webpack-dev-server
   Directory: /home/tsikes/dev/learn/react/expensify-app
   Output:
   

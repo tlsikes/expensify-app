@@ -1,37 +1,55 @@
-// Entry point, output file
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const path = require('path');
 const appPath = path.join(__dirname, 'public');
+// console.log(appPath);
 
-console.log(appPath);
+module.exports = (env, argv) => {
+    
+    console.log('env: ', env);
+    const isProduction = env === 'production';
+    const cssExtract = new ExtractTextPlugin('styles.css');
 
-module.exports = {
-    entry: './src/app.js',
-    output: {
-        path: appPath,
-        filename: 'bundle.js'
-    },
-
-    module: {
-        rules: [{
-            loader: 'babel-loader',
-            test: /\.js$/,
-            exclude: /node_modules/
-        }, {
-            test: /\.s?css$/,
-            use: [
-                'style-loader',
-                'css-loader',
-                'sass-loader'
-            ]
-        }]
-    },
-    devtool: 'cheap-module-eval-source-map',
-    devServer: {
-        contentBase: appPath,
-        historyApiFallback: true
+    return {
+        entry: './src/app.js',
+        output: {
+            path: appPath,
+            filename: 'bundle.js'
+        },
+    
+        module: {
+            rules: [{
+                loader: 'babel-loader',
+                test: /\.js$/,
+                exclude: /node_modules/
+            }, {
+                test: /\.s?css$/,
+                use: cssExtract.extract({
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        }
+                        
+                    ]
+                })
+            }]
+        },
+        plugins: [
+            cssExtract
+        ],
+        devtool: isProduction ? 'source-map' : 'inline-source-map',
+        devServer: {
+            contentBase: appPath,
+            historyApiFallback: true
+        }
     }
 };
-
-// Loader
-
