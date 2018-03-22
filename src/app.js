@@ -18,6 +18,7 @@ const timestamp = (start, count, units) => {
     return start + moment.duration(count, units);
 };
 
+/*
 const expenseOne = store.dispatch(
     addExpense({
         description: 'Rent', amount: 100, createdTimestamp: timestamp(first, 0, 'days') 
@@ -42,13 +43,14 @@ const expenseFive = store.dispatch(
     addExpense({ 
         description: 'Gas bill', amount: 10000, createdTimestamp: timestamp(first, 4, 'days') 
     }));
-    
+
 const expenseSix = store.dispatch(
     addExpense({ 
         description: 'Jewelry', amount: 5000000, createdTimestamp: timestamp(first, 1, 'days') 
     }));
 
 console.log(store.getState());
+*/
 
 store.subscribe(() => {
     const state = store.getState();
