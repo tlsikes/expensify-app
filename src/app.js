@@ -21,7 +21,7 @@ const timestamp = (start, count, units) => {
 
 const expenseOne = store.dispatch(
     addExpense({
-        description: 'Mortgage', amount: 1009.37, createdTimestamp: timestamp(first, 0, 'days') 
+        description: 'Mortgage', amount: 100937, createdTimestamp: timestamp(first, 0, 'days') 
     }));
 
 /*
