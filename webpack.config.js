@@ -2,6 +2,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const path = require('path');
 const appPath = path.join(__dirname, 'public');
+const assetPath = path.join(appPath, 'dist');
+
 // console.log(appPath);
 
 module.exports = (env, argv) => {
@@ -13,7 +15,7 @@ module.exports = (env, argv) => {
     return {
         entry: './src/app.js',
         output: {
-            path: appPath,
+            path: assetPath,
             filename: 'bundle.js'
         },
     
@@ -49,7 +51,8 @@ module.exports = (env, argv) => {
         devtool: isProduction ? 'source-map' : 'inline-source-map',
         devServer: {
             contentBase: appPath,
-            historyApiFallback: true
+            historyApiFallback: true,
+            publicPath: '/dist/'
         }
     }
 };
