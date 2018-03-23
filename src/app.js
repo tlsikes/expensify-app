@@ -18,12 +18,13 @@ const timestamp = (start, count, units) => {
     return start + moment.duration(count, units);
 };
 
-/*
+
 const expenseOne = store.dispatch(
     addExpense({
-        description: 'Rent', amount: 100, createdTimestamp: timestamp(first, 0, 'days') 
+        description: 'Mortgage', amount: 270099, createdTimestamp: timestamp(first, 0, 'days') 
     }));
 
+/*
 const expenseThree = store.dispatch(
     addExpense({ 
         description: 'Electricity', amount: 2500, createdTimestamp: timestamp(first, 3, 'days') 
