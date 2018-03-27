@@ -2,7 +2,6 @@ import moment from 'moment';
 
 // Match on text substring..
 const isIncluded = (text, substring) => {
-    console.log(`text: ${text}, substring: ${substring}`)
     if (typeof text !== 'string') {
         return false;
     }
@@ -20,18 +19,16 @@ const isIncluded = (text, substring) => {
 // Get visible expenses
 const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
     return expenses.filter((e) => {
-        console
         const createdAtMoment = moment(e.createdTimestamp);
         const startDateMatch = startDate ? startDate.isSameOrBefore(createdAtMoment, 'day') : true;
         const endDateMatch = endDate ? endDate.isSameOrAfter(createdAtMoment, 'day') : true;
         const textMatch = isIncluded(e.description, text); // Note description is a string for sure...fix.
-        console.log(`c1: ${startDateMatch}, c2: ${endDateMatch}, c3: ${textMatch}`);
         return startDateMatch && endDateMatch && textMatch;
     }).sort((a, b) => {
         if (sortBy === 'amount') {
             return a.amount < b.amount ? 1 : -1;
         } else {
-            return a.createdTimestamp < b.createdTimestamp ? -1 : 1;
+            return a.createdTimestamp < b.createdTimestamp ? 1 : -1;
         }
     });
 }

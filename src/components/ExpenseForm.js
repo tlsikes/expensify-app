@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
 
 // momentjs
 // AirBNB react-dates
@@ -10,7 +9,7 @@ import 'react-dates/lib/css/_datepicker.css';
 // const now = moment();
 // console.log(now.format('MMM Do, YYYY'));
 
-class ExpenseForm extends React.Component {
+export default class ExpenseForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -101,5 +100,3 @@ class ExpenseForm extends React.Component {
         )
     }
 }
-
-export default connect()(ExpenseForm);
