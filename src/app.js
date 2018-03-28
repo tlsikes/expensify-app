@@ -10,6 +10,7 @@ import moment from 'moment';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
+import './firebase/firebase';
 
 const store = configureStore();
 
@@ -19,10 +20,9 @@ const timestamp = (start, count, units) => {
     return start + moment.duration(count, units);
 };
 
-
 const expenseOne = store.dispatch(
     addExpense({
-        description: 'Mortgage', amount: 100937, createdTimestamp: timestamp(first, 0, 'days') 
+        key: 'fershluginer', description: 'Mortgage', amount: 100937, createdTimestamp: timestamp(first, 0, 'days') 
     }));
 
 /*

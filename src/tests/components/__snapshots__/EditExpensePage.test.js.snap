@@ -9,6 +9,7 @@ exports[`should render with defaults correctly 1`] = `
         "createdTimestamp": 345600000,
         "description": "Credit Card",
         "id": "3",
+        "key": "3",
         "note": "",
       }
     }
