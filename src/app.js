@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
-import { addExpense } from './actions/expenses';  // Investigate named imports versus not...
+import { startSetExpenses } from './actions/expenses';  // Investigate named imports versus not...
 import { setTextFilter } from './actions/filters';
 import getVisibleExpenses from './selectors/expenses';
 import moment from 'moment';
@@ -20,12 +20,13 @@ const timestamp = (start, count, units) => {
     return start + moment.duration(count, units);
 };
 
+
+/*
 const expenseOne = store.dispatch(
     addExpense({
         key: 'fershluginer', description: 'Mortgage', amount: 100937, createdTimestamp: timestamp(first, 0, 'days') 
     }));
 
-/*
 const expenseThree = store.dispatch(
     addExpense({ 
         description: 'Electricity', amount: 2500, createdTimestamp: timestamp(first, 3, 'days') 
@@ -68,12 +69,17 @@ setTimeout(() => {
 }, 3000);
 */
 
-console.log(store.getState());
-
 const jsx = (
     <Provider store={store}>
         <AppRouter />
     </Provider>
 );
 
-ReactDOM.render(jsx, document.getElementById('app'));
+ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+
+store.dispatch(startSetExpenses()).then(() => {
+    ReactDOM.render(jsx, document.getElementById('app'));
+}).catch((e) => {
+    console.log('failed to set expenses', e);
+});
+
