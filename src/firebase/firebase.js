@@ -11,8 +11,6 @@ const config = {
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
 };
 
-console.log('FIREBASE_DATABASE_URL: ', process.env.FIREBASE_DATABASE_URL);
-
 // TODO: My use of 'id' in the expense objects is conflicting with the Firebase ID. Keep this in mind.
 firebase.initializeApp(config);
 
