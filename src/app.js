@@ -14,14 +14,13 @@ import './firebase/firebase';
 
 const store = configureStore();
 
+/*
 const first = moment().startOf('month');
 
 const timestamp = (start, count, units) => {
     return start + moment.duration(count, units);
 };
 
-
-/*
 const expenseOne = store.dispatch(
     addExpense({
         key: 'fershluginer', description: 'Mortgage', amount: 100937, createdTimestamp: timestamp(first, 0, 'days') 
@@ -60,14 +59,6 @@ store.subscribe(() => {
     const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
     console.log(visibleExpenses);
 });
-
-/*
-store.dispatch(setTextFilter('water'));
-
-setTimeout(() => {
-    store.dispatch(setTextFilter('bill'));
-}, 3000);
-*/
 
 const jsx = (
     <Provider store={store}>
