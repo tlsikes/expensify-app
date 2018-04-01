@@ -41,6 +41,19 @@ export const removeExpense = (
     id
 });
 
+export const startRemoveExpense = ({ id} ) => {
+    return (dispatch) => {
+        return database.ref('expenses').child(id).remove().then(() => {
+            // Dispatch the action for redux
+            dispatch(removeExpense({
+                id
+            }));
+        }).catch((e) => {
+            console.log('remove failed: ', e);
+        });
+    }
+};
+
 // EDIT_EXPENSE
 export const editExpense = (
     id,
@@ -51,6 +64,17 @@ export const editExpense = (
     updates
 });
 
+export const startEditExpense = (id, updates) => {
+    return (dispatch) => {
+        console.log('id: ', id);
+        console.log('editing: ', updates);
+        return database.ref('expenses/' + id).update(updates).then(() => {
+            // Dispatch the action for redux
+            dispatch(editExpense(id, updates));
+        });
+    }
+};
+
 export const setExpenses = (expenses) => ({
     type: 'SET_EXPENSES',
     expenses
@@ -58,7 +82,7 @@ export const setExpenses = (expenses) => ({
 
 export const startSetExpenses = () => {
     return (dispatch) => {
-
+        // This return is to return promise for second "then"...
         return database.ref('expenses')
             .once('value')
             .then((snapshot) => {
