@@ -7,19 +7,34 @@ import {
     removeExpense, 
     startRemoveExpense,
     setExpenses, 
-    startSetExpenses 
+    startSetExpenses,
+    expenseDbRoot
 } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
+import { login } from '../../actions/auth';
 import database from '../../firebase/firebase';
 
+const uid = 'OdiousHowlingNewt';
+
+const reduxState = {
+    auth: {
+        uid
+    }
+}
+
 const createMockStore = configureMockStore([thunk]);
+
+const createTestStore = () => {
+    const store = createMockStore(reduxState);
+    return store;
+}
 
 beforeEach((done) => {
     const expensesData = {};
     expenses.forEach(({ id, description, note, amount, createdTimestamp }) => {
         expensesData[id] = { description, note, amount, createdTimestamp }
     });
-    database.ref('expenses').set(expensesData).then(() => done());
+    database.ref(expenseDbRoot(uid)).set(expensesData).then(() => done());
 });
 
 test('should return action object with provided values', () => {
@@ -33,7 +48,7 @@ test('should return action object with provided values', () => {
 // NOTE: These tests don't mock the db...yech. (Resolved by setting up a test db.)
 /* TODO: Figure out why this test has a problem...
 test('should add expense to database and store', (done) => {
-    const store = createMockStore({});
+    const store = createTestStore({});
     const expense = {
         description: 'Mouse',
         amount: 9899,
@@ -66,7 +81,7 @@ test('should add expense to database and store', (done) => {
 
 /* TODO: Figure out why this test has a problem...
 test('should add expense with defaults to database and store', (done) => {
-    const store = createMockStore({});
+    const store = createTestStore({});
     const expense = {
         description: '',
         amount: 0,
@@ -83,7 +98,7 @@ test('should add expense with defaults to database and store', (done) => {
             }
         });
 
-        return database.ref(`expenses/${actions[0].expense.id}`).once('value');
+        return database.ref(`${expenseDbRoot(uid)}/${actions[0].expense.id}`).once('value');
     }).then((snapshot) => {
         expect(snapshot.val()).toEqual(expense);
         done();
@@ -115,7 +130,7 @@ test('should return remove expense action object', () => {
 
 /* TODO: Another flaky test...
 test('should remove one expense item', (done) => {
-    const store = createMockStore({});
+    const store = createTestStore({});
     const id = expenses[2].id;
     store.dispatch(startRemoveExpense({ id })).then(() => {
         const actions = store.getActions();
@@ -144,7 +159,7 @@ test('should setup set expense action object with data', () => {
 
 // TODO: The then() function never executes, investigate...bad since test passes...
 test('should fetch expense list from firebase', () => {
-    const store = createMockStore();
+    const store = createTestStore();
     store.dispatch(startSetExpenses()).then(() => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
@@ -154,6 +169,6 @@ test('should fetch expense list from firebase', () => {
         });
         done();
     }).catch((e) => {
-        console.log('error fetching expenses: ', e);
+        console.log('error setting expenses: ', e);
     });
 });

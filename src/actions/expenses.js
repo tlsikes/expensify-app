@@ -3,6 +3,14 @@
 import uuid from 'uuid';
 import database from '../firebase/firebase';
 
+const getUID = (state) => {
+    return state.auth.uid;
+}
+
+export const expenseDbRoot = (uid) => {
+    return `users/${uid}/expenses`;
+}
+
 // Actions
 
 // ADD_EXPENSE
@@ -12,7 +20,7 @@ export const addExpense = (expense) => ({
 });
 
 export const startAddExpense = (expenseData = {}) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         const {
             description = '', 
             note = '', 
@@ -21,7 +29,7 @@ export const startAddExpense = (expenseData = {}) => {
         } = expenseData;
         const expense = { description, note, amount, createdTimestamp };
 
-        return database.ref('expenses').push(expense).then((ref) => {
+        return database.ref(expenseDbRoot(getState())).push(expense).then((ref) => {
             // Dispatch the action for redux
             dispatch(addExpense({
                 id: ref.key,
@@ -42,8 +50,8 @@ export const removeExpense = (
 });
 
 export const startRemoveExpense = ({ id} ) => {
-    return (dispatch) => {
-        return database.ref('expenses').child(id).remove().then(() => {
+    return (dispatch, getState) => {
+        return database.ref(expenseDbRoot(getState())).child(id).remove().then(() => {
             // Dispatch the action for redux
             dispatch(removeExpense({
                 id
@@ -65,10 +73,10 @@ export const editExpense = (
 });
 
 export const startEditExpense = (id, updates) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         console.log('id: ', id);
         console.log('editing: ', updates);
-        return database.ref('expenses/' + id).update(updates).then(() => {
+        return database.ref(expenseDbRoot(getState()) + '/' + id).update(updates).then(() => {
             // Dispatch the action for redux
             dispatch(editExpense(id, updates));
         });
@@ -81,9 +89,10 @@ export const setExpenses = (expenses) => ({
 });
 
 export const startSetExpenses = () => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         // This return is to return promise for second "then"...
-        return database.ref('expenses')
+        const state = getState();
+        return database.ref(expenseDbRoot(getUID(state)))
             .once('value')
             .then((snapshot) => {
                 const expenses = [];
