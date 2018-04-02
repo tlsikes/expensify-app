@@ -28,8 +28,8 @@ export const startAddExpense = (expenseData = {}) => {
             createdTimestamp = 0
         } = expenseData;
         const expense = { description, note, amount, createdTimestamp };
-
-        return database.ref(expenseDbRoot(getState())).push(expense).then((ref) => {
+        const uid = getState().auth.uid;
+        return database.ref(expenseDbRoot(uid)).push(expense).then((ref) => {
             // Dispatch the action for redux
             dispatch(addExpense({
                 id: ref.key,
@@ -51,7 +51,8 @@ export const removeExpense = (
 
 export const startRemoveExpense = ({ id} ) => {
     return (dispatch, getState) => {
-        return database.ref(expenseDbRoot(getState())).child(id).remove().then(() => {
+        const uid = getState().auth.uid;
+        return database.ref(expenseDbRoot(uid)).child(id).remove().then(() => {
             // Dispatch the action for redux
             dispatch(removeExpense({
                 id
@@ -76,7 +77,8 @@ export const startEditExpense = (id, updates) => {
     return (dispatch, getState) => {
         console.log('id: ', id);
         console.log('editing: ', updates);
-        return database.ref(expenseDbRoot(getState()) + '/' + id).update(updates).then(() => {
+        const uid = getState().auth.uid;
+        return database.ref(expenseDbRoot(uid) + '/' + id).update(updates).then(() => {
             // Dispatch the action for redux
             dispatch(editExpense(id, updates));
         });
@@ -91,8 +93,8 @@ export const setExpenses = (expenses) => ({
 export const startSetExpenses = () => {
     return (dispatch, getState) => {
         // This return is to return promise for second "then"...
-        const state = getState();
-        return database.ref(expenseDbRoot(getUID(state)))
+        const uid = getState().auth.uid;
+        return database.ref(expenseDbRoot(uid))
             .once('value')
             .then((snapshot) => {
                 const expenses = [];
