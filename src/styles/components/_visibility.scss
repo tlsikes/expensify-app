@@ -1,0 +1,12 @@
+
+.show-for-mobile {
+    @media (min-width: $large-screen-min) {
+        display: none;
+    }
+}
+
+.show-for-bigscreen {
+    @media (max-width: $large-screen-min - .01rem) {
+        display: none;
+    }
+}
